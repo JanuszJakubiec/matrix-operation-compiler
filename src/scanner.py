@@ -5,8 +5,8 @@ from reserved import *
 
 class Scanner(object):
     def __init__(self, **kwargs):
-        self.tokens = tokens
         self.reserved = reserved
+        self.tokens = tokens
         self.lexer = lex.lex(module=self, **kwargs)
 
     # Regular expression rules for simple tokens
@@ -39,9 +39,13 @@ class Scanner(object):
     t_APOSTROPHE = r'\''
     t_COMMA = r','
     t_SEMICOLON = r';'
-    t_ID = r'[^\W\d]\w*'
 
     # rules with action code
+    def t_ID(self, t):
+        r'[^\W\d]\w*'
+        t.type = reserved.get(t.value, 'ID')
+        return t
+
     def t_INTEGER(self, t):
         r'\d+'
         t.value = int(t.value)
@@ -58,17 +62,23 @@ class Scanner(object):
         return t
 
     def t_COMMENT(self, t):
-        r'#.*'
+        r'\#.*'
         return
 
     def t_newline(self, t):
         r'\n+'
         t.lexer.lineno += len(t.value)
+        return
 
-    t_ignore = ' \t\n'
+    t_ignore = ' \t\r'
 
     # Error handling rule
     def t_error(self, t):
-        print("Syntax error at line" + t.lexer.lineno)
+        print("Syntax error at line" + str(t.lexer.lineno))
         t.lexer.skip(1)
 
+    def input(self, text):
+        return self.lexer.input(text)
+
+    def token(self):
+        return self.lexer.token()

@@ -35,4 +35,4 @@ tokens = [
   'FLOAT',
   'STRING',
   'COMMENT'
-] + list(reserved)
+] + list(reserved.values())
