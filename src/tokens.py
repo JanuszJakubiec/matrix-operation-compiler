@@ -24,4 +24,12 @@ tokens = [
   'R-S-BRACKET',
   'L-C-BRACKET',
   'R-C-BRACKET',
+  'COLON',
+  'APOSTROPHE',
+  'COMMA',
+  'SEMICOLON',
+  'IDENTIFIERS',
+  'INTEGERS',
+  'FLOATS',
+  'STRINGS'
 ]
