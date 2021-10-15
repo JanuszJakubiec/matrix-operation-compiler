@@ -1,3 +1,5 @@
+import reserved
+
 tokens = [
   'PLUS',
   'MINUS',
@@ -16,20 +18,21 @@ tokens = [
   'LESS',
   'GREATER_EQUAL',
   'LESS_EQUAL',
-  'EXCLAMATION_EQUAL',
-  'COMPARE',
-  'L-R-BRACKET',
-  'R-R-BRACKET',
-  'L-S-BRACKET',
-  'R-S-BRACKET',
-  'L-C-BRACKET',
-  'R-C-BRACKET',
+  'NOT_EQUAL',
+  'EQUAL',
+  'L_R_BRACKET',
+  'R_R_BRACKET',
+  'L_S_BRACKET',
+  'R_S_BRACKET',
+  'L_C_BRACKET',
+  'R_C_BRACKET',
   'COLON',
   'APOSTROPHE',
   'COMMA',
   'SEMICOLON',
-  'IDENTIFIERS',
-  'INTEGERS',
-  'FLOATS',
-  'STRINGS'
-]
+  'ID',
+  'INTEGER',
+  'FLOAT',
+  'STRING',
+  'COMMENT'
+] + list(reserved)
