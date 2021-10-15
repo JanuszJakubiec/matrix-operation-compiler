@@ -1,4 +1,4 @@
-import reserved
+from reserved import *
 
 tokens = [
   'PLUS',

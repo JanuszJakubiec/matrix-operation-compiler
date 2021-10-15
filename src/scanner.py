@@ -3,7 +3,7 @@ from tokens import *
 from reserved import *
 
 
-class Lexer(object):
+class Scanner(object):
     def __init__(self, **kwargs):
         self.tokens = tokens
         self.reserved = reserved
@@ -71,3 +71,4 @@ class Lexer(object):
     def t_error(self, t):
         print("Syntax error at line" + t.lexer.lineno)
         t.lexer.skip(1)
+

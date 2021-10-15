@@ -1,7 +1,7 @@
 # object oriented version
 
 import sys
-import scanner_oo  # scanner_oo.py is a file you create, (it is not an external library)
+import scanner  # scanner.py is a file you create, (it is not an external library)
 
 if __name__ == '__main__':
 
@@ -13,8 +13,7 @@ if __name__ == '__main__':
         sys.exit(0)
 
     text = file.read()
-    lexer = scanner_oo.Scanner()
-    lexer.build()
+    lexer = scanner.Scanner()
 
     # Give the lexer some input
     lexer.input(text)
