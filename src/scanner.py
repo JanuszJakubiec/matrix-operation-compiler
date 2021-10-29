@@ -47,7 +47,7 @@ class Scanner(object):
         return t
 
     def t_FLOAT(self, t):
-        r'\d+\.\d*'
+        r'\d+\.\d*|\.\d+'
         t.value = float(t.value)
         return t
 
