@@ -47,7 +47,7 @@ class Scanner(object):
         return t
 
     def t_FLOAT(self, t):
-        r'(\d+\.\d*|\.\d+)[eE]{0,1}\d+'
+        r'(\d+\.\d*|\.\d+)([eE][\+-]{0,1}\d+){0,1}'
         t.value = float(t.value)
         return t
 
