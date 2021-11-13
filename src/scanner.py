@@ -47,7 +47,7 @@ class Scanner(object):
         return t
 
     def t_FLOAT(self, t):
-        r'(\d+\.\d*|\.\d+)([eE][\+-]?\d+)?'
+        r'(\d+\.\d*|\.\d+)([eE][\+-]{0,1}\d+){0,1}'
         t.value = float(t.value)
         return t
 
@@ -57,7 +57,7 @@ class Scanner(object):
         return t
 
     def t_STRING(self, t):
-        r'".*?"'
+        r'"[^\n\"]*"'
         t.value = str(t.value)[1:-1]
         return t
 

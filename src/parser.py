@@ -4,9 +4,14 @@ import ply.yacc as yacc
 tokens = scanner.tokens
 
 precedence = (
-    # to fill ...
-    ("left", '+', '-'),
-    # to fill ...
+    # assign operands
+    ('right', 'ASSIGN', 'PLUS_ASSIGN', 'MINUS_ASSIGN', 'TIMES_ASSIGN', 'DIVIDE_ASSIGN'),
+    # number operands
+    ('left', 'PLUS', 'MINUS'),
+    ('left', 'TIMES', 'DIVIDE'),
+    # matrix operands
+    ('left', 'MAT_PLUS', 'MAT_MINUS'),
+    ('left', 'MAT_TIMES', 'MAT_DIVIDE'),
 )
 
 
