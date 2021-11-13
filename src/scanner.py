@@ -39,6 +39,7 @@ class Scanner(object):
     t_APOSTROPHE = r'\''
     t_COMMA = r','
     t_SEMICOLON = r';'
+    t_NOT = r'!'
 
     # rules with action code
     def t_ID(self, t):

@@ -33,4 +33,5 @@ tokens = ['PLUS',
           'INTEGER',
           'FLOAT',
           'STRING',
-          'COMMENT'] + list(reserved.values())
+          'COMMENT',
+          'NOT'] + list(reserved.values())
