@@ -4,14 +4,12 @@ import ply.yacc as yacc
 tokens = scanner.tokens
 
 precedence = (
-    # return keyword
-    ('left', 'RETURN'),
-    # else keyword
-    ('right', 'ELSE'),
-    # conditionals
-    ('right', 'IF', 'WHILE', 'FOR'),
-    # function calls
-    ('right', 'EYE', 'ZEROS', 'ONES', 'PRINT'),
+    # semicolon operand
+    ('right', 'SEMICOLON'),
+    # flow control
+    ('right', 'IF', 'ELSE', 'WHILE', 'FOR', 'RETURN', 'CONTINUE', 'BREAK'),
+    # colon and comma operand
+    ('left', 'COLON', 'COMMA'),
     # assign operands
     ('right', 'ASSIGN', 'PLUS_ASSIGN', 'MINUS_ASSIGN', 'TIMES_ASSIGN', 'DIVIDE_ASSIGN'),
     # relation operands
@@ -19,16 +17,14 @@ precedence = (
     # number and matrix operands
     ('left', 'PLUS', 'MINUS', 'MAT_PLUS', 'MAT_MINUS'),
     ('left', 'TIMES', 'DIVIDE', 'MAT_TIMES', 'MAT_DIVIDE'),
-    # brackets operands
-    ('right', 'L_R_BRACKET', 'R_R_BRACKET', 'L_S_BRACKET', 'R_S_BRACKET', 'L_C_BRACKET', 'R_C_BRACKET'),
-    # colon and comma operand
-    ('left', 'COLON', 'COMMA'),
     # transpose operand
     ('left', 'APOSTROPHE'),
     # negation operand
     ('right', 'NOT'),
-    # semicolon operand
-    ('right', 'SEMICOLON')
+    # function calls
+    ('right', 'EYE', 'ZEROS', 'ONES', 'PRINT'),
+    # brackets operands
+    ('right', 'L_R_BRACKET', 'R_R_BRACKET', 'L_S_BRACKET', 'R_S_BRACKET', 'L_C_BRACKET', 'R_C_BRACKET')
 )
 
 
