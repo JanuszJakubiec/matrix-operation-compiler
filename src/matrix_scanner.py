@@ -29,6 +29,9 @@ class Scanner(object):
     t_LESS_EQUAL = r'<='
     t_NOT_EQUAL = r'!='
     t_EQUAL = r'=='
+    t_OR = r'||'
+    t_AND = r'&&'
+    t_NOT = r'!'
     t_L_R_BRACKET = r'\('
     t_R_R_BRACKET = r'\)'
     t_L_S_BRACKET = r'\['
@@ -82,5 +85,6 @@ class Scanner(object):
 
     def token(self):
         token = self.lexer.token()
-        if token is None: return token
+        if token is None:
+            return token
         return "({0}): {1}({2})".format(str(token.lineno), str(token.type), str(token.value))
