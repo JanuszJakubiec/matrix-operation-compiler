@@ -26,12 +26,13 @@ tokens = ['PLUS',
           'L_C_BRACKET',
           'R_C_BRACKET',
           'COLON',
-          'APOSTROPHE',
+          'TRANSPOSE',
           'COMMA',
           'SEMICOLON',
           'ID',
           'INTEGER',
           'FLOAT',
           'STRING',
-          'COMMENT',
-          'NOT'] + list(reserved.values())
+          'COMMENT',  # to delete?
+          ] + list(reserved.values())
+# NOT, AND, OR?

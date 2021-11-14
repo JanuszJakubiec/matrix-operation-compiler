@@ -36,10 +36,9 @@ class Scanner(object):
     t_L_C_BRACKET = r'\{'
     t_R_C_BRACKET = r'\}'
     t_COLON = r':'
-    t_APOSTROPHE = r'\''
+    t_TRANSPOSE = r'\''
     t_COMMA = r','
     t_SEMICOLON = r';'
-    t_NOT = r'!'
 
     # rules with action code
     def t_ID(self, t):

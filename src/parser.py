@@ -7,20 +7,19 @@ precedence = (
     # semicolon operand
     ('right', 'SEMICOLON'),
     # flow control
-    ('right', 'IF', 'ELSE', 'WHILE', 'FOR', 'RETURN', 'CONTINUE', 'BREAK'),
+    ('right', 'IF', 'WHILE', 'FOR', 'RETURN', 'CONTINUE', 'BREAK'),
+    ('nonassoc', 'ELSE'),
     # colon and comma operand
     ('left', 'COLON', 'COMMA'),
     # assign operands
     ('right', 'ASSIGN', 'PLUS_ASSIGN', 'MINUS_ASSIGN', 'TIMES_ASSIGN', 'DIVIDE_ASSIGN'),
     # relation operands
-    ('right', 'GREATER', 'LESS', 'GREATER_EQUAL', 'LESS_EQUAL', 'EQUAL', 'NOT_EQUAL'),
+    ('nonassoc', 'GREATER', 'LESS', 'GREATER_EQUAL', 'LESS_EQUAL', 'EQUAL', 'NOT_EQUAL'),
     # number and matrix operands
     ('left', 'PLUS', 'MINUS', 'MAT_PLUS', 'MAT_MINUS'),
     ('left', 'TIMES', 'DIVIDE', 'MAT_TIMES', 'MAT_DIVIDE'),
     # transpose operand
-    ('left', 'APOSTROPHE'),
-    # negation operand
-    ('right', 'NOT'),
+    ('left', 'TRANSPOSE'),
     # function calls
     ('right', 'EYE', 'ZEROS', 'ONES', 'PRINT'),
     # brackets operands

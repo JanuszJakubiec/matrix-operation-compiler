@@ -1,0 +1,81 @@
+########################################################################
+############################### Program ################################
+########################################################################
+
+program : instructions_opt
+
+instructions_opt : instructions
+                 | eps
+
+instructions : instructions instruction
+             | instruction
+
+instruction : expression SEMICOLON
+            | command SEMICOLON
+            | conditional_statement
+            | while_statement
+            | for_statement
+            | instruction_block
+
+########################################################################
+############################# Flow control #############################
+########################################################################
+
+conditional_statement : if_statement ELSE body
+                      | if_statement %prec IF
+
+if_statement : IF L_R_BRACKET sentence R_R_BRACKET body
+
+while_statement : WHILE L_R_BRACKET sentence R_R_BRACKET body
+
+for_statement : FOR ID ASSIGN range body
+
+body : instruction_block
+     | instruction
+
+instruction_block : L_C_BRACKET instructions_opt R_C_BRACKET
+
+########################################################################
+############################## Expression ##############################
+########################################################################
+
+expression : expression PLUS expression
+           | expression MINUS expression
+           | expression MAT_PLUS expression
+           | expression MAT_MINUS expression
+           | expression TIMES expression
+           | expression DIVIDE expression
+           | expression MAT_TIMES expression
+           | expression MAT_DIVIDE expression
+           | expression TRANSPOSE
+           | EYE L_R_BRACKET expression R_R_BRACKET
+           | ZEROS L_R_BRACKET expression R_R_BRACKET
+           | ONES L_R_BRACKET expression R_R_BRACKET
+           | L_R_BRACKET expression R_R_BRACKET
+
+########################################################################
+############################### Command ################################
+########################################################################
+
+command : print_command
+        | RETURN expression
+        | CONTINUE
+        | BREAK
+
+print_command : PRINT sequence
+
+########################################################################
+############################ Something else ############################
+########################################################################
+
+sentence :    expression EQUAL expression
+            | expression NOT_EQUAL expression
+            | expression GREATER expression
+            | expression LESS expression
+            | expression GREATER_EQUAL expression
+            | expression LESS_EQUAL expression
+
+sequence : expression COMMA sequence
+         | expression
+
+assignment :
