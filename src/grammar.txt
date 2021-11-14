@@ -52,6 +52,12 @@ expression : expression PLUS expression
            | ZEROS L_R_BRACKET expression R_R_BRACKET
            | ONES L_R_BRACKET expression R_R_BRACKET
            | L_R_BRACKET expression R_R_BRACKET
+           | assignment
+           | matrix
+           | ID
+           | INTEGER
+           | FLOAT
+           | STRING
 
 ########################################################################
 ############################### Command ################################
@@ -75,7 +81,17 @@ sentence :    expression EQUAL expression
             | expression GREATER_EQUAL expression
             | expression LESS_EQUAL expression
 
+matrix : L_S_BRACKET row_sequence R_S_BRACKET
+
+row_sequence : row COMMA row_sequence
+
+row : L_S_BRACKET sequence R_S_BRACKET
+
 sequence : expression COMMA sequence
          | expression
 
-assignment :
+assignment : ID ASSIGN expression
+           | ID PLUS_ASSIGN expression
+           | ID MINUS_ASSIGN expression
+           | ID TIMES_ASSIGN expression
+           | ID DIVIDE_ASSIGN expression
