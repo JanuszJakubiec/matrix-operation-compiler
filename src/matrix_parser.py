@@ -95,8 +95,7 @@ def p_for_statement(p):
 
 
 def p_body(p):
-    """body : instruction_block
-            | instruction """
+    """body : instruction """
 
 
 def p_instruction_block(p):
@@ -143,21 +142,24 @@ def p_expression(p):
                   | ONES L_R_BRACKET expression R_R_BRACKET
                   | L_R_BRACKET expression R_R_BRACKET
                   | assignment
-                  | matrix
-                  | ID
-                  | matrix L_S_BRACKET INTEGER COMMA INTEGER R_S_BRACKET %prec MAT_ELEMENT
+                  | changeable
                   | INTEGER
                   | FLOAT
                   | STRING """
 
 
 def p_assignment(p):
-    """assignment : ID ASSIGN expression
-                  | ID PLUS_ASSIGN expression
-                  | ID MINUS_ASSIGN expression
-                  | ID TIMES_ASSIGN expression
-                  | ID DIVIDE_ASSIGN expression """
+    """assignment : changeable ASSIGN expression
+                  | changeable PLUS_ASSIGN expression
+                  | changeable MINUS_ASSIGN expression
+                  | changeable TIMES_ASSIGN expression
+                  | changeable DIVIDE_ASSIGN expression """
 
+
+def p_changeable(p):
+    """changeable : ID
+                  | matrix
+                  | expression L_S_BRACKET INTEGER COMMA INTEGER R_S_BRACKET %prec MAT_ELEMENT """
 
 ########################################################################
 #                               Command                                #
@@ -183,7 +185,8 @@ def p_matrix(p):
 
 
 def p_row_sequence(p):
-    """row_sequence : row COMMA row_sequence """
+    """row_sequence : row COMMA row_sequence
+                    | row """
 
 
 def p_row(p):
@@ -192,7 +195,7 @@ def p_row(p):
 
 def p_sequence(p):
     """sequence : expression COMMA sequence
-                | expression"""
+                | expression """
 
 
 parser = yacc.yacc()

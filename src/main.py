@@ -37,4 +37,4 @@ if __name__ == '__main__':
 
         parser = matrix_parser.parser
         text = file.read()
-        parser.parse(text, lexer=matrix_scanner.lexer)
+        parser.parse(text, lexer=matrix_scanner.Scanner())
