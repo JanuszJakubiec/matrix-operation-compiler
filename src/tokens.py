@@ -35,7 +35,5 @@ tokens = ['PLUS',
           'ID',
           'INTEGER',
           'FLOAT',
-          'STRING',
-          'COMMENT',  # to delete?
-          ] + list(reserved.values())
+          'STRING'] + list(reserved.values())
 # NOT, AND, OR?
