@@ -92,3 +92,22 @@ class Matrix(Node):
 class Row(Node):
     def __init__(self, sequence):
         self.sequence = sequence
+
+class Integer(Node):
+    def __init__(self, value):
+        self.value = value
+
+
+class Id(Node):
+    def __init__(self, value):
+        self.value = value
+
+
+class Float(Node):
+    def __init__(self, value):
+        self.value = value
+
+
+class String(Node):
+    def __init__(self, value):
+        self.value = value

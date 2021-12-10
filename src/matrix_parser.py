@@ -152,9 +152,9 @@ def p_expression(p):
                   | L_R_BRACKET expression R_R_BRACKET
                   | changeable
                   | matrix
-                  | INTEGER
-                  | FLOAT
-                  | STRING """
+                  | integer
+                  | float
+                  | string """
     if len(p) == 5:
         p[0] = matrix_ast.FunctionCall(function=p[1], expression=p[3])
     if len(p) == 4:
@@ -178,12 +178,32 @@ def p_assignment(p):
 
 
 def p_changeable(p):
-    """changeable : ID
-                  | expression L_S_BRACKET INTEGER COMMA INTEGER R_S_BRACKET %prec MAT_ELEMENT """
+    """changeable : id
+                  | expression L_S_BRACKET integer COMMA integer R_S_BRACKET %prec MAT_ELEMENT """
     if len(p) == 2:
         p[0] = p[1]
     else:
         p[0] = matrix_ast.MatrixCall(expression=p[1], integer1=p[3], integer2=p[5])
+
+
+def p_integer(p):
+    """integer : INTEGER"""
+    p[0] = matrix_ast.Integer(p[1])
+
+
+def p_float(p):
+    """float : FLOAT"""
+    p[0] = matrix_ast.Float(p[1])
+
+
+def p_string(p):
+    """string : STRING"""
+    p[0] = matrix_ast.String(p[1])
+
+
+def p_id(p):
+    """id : ID"""
+    p[0] = matrix_ast.Id(p[1])
 
 
 ########################################################################
