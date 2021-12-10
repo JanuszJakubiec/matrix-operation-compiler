@@ -5,21 +5,11 @@ import matrix_ast
 tokens = matrix_scanner.tokens
 
 precedence = (
-    # semicolon operand
-    ('right', 'SEMICOLON'),
     # flow control
-    ('right', 'IF', 'WHILE', 'FOR', 'RETURN', 'CONTINUE', 'BREAK'),
+    ('right', 'IFX'),
     ('nonassoc', 'ELSE'),
     # colon and comma operand
-    ('right', 'COLON', 'COMMA'),
-    # assign operands
-    ('right', 'ASSIGN', 'PLUS_ASSIGN', 'MINUS_ASSIGN', 'TIMES_ASSIGN', 'DIVIDE_ASSIGN'),
-    # sentence operations
-    ('left', 'OR'),
-    ('left', 'AND'),
-    ('right', 'NOT'),
-    # relation operands
-    ('nonassoc', 'GREATER', 'LESS', 'GREATER_EQUAL', 'LESS_EQUAL', 'EQUAL', 'NOT_EQUAL'),
+    ('right', 'COLON'),
     # number and matrix operands
     ('left', 'PLUS', 'MINUS', 'MAT_PLUS', 'MAT_MINUS'),
     ('left', 'TIMES', 'DIVIDE', 'MAT_TIMES', 'MAT_DIVIDE'),
@@ -28,10 +18,6 @@ precedence = (
     ('nonassoc', 'MAT_ELEMENT'),
     # transpose operand
     ('left', 'TRANSPOSE'),
-    # function calls
-    ('right', 'EYE', 'ZEROS', 'ONES', 'PRINT'),
-    # brackets operands
-    ('right', 'L_R_BRACKET', 'R_R_BRACKET', 'L_S_BRACKET', 'R_S_BRACKET', 'L_C_BRACKET', 'R_C_BRACKET')
 )
 
 
@@ -71,6 +57,7 @@ def p_instructions(p):
 
 def p_instruction(p):
     """instruction : expression SEMICOLON
+                   | assignment SEMICOLON
                    | command SEMICOLON
                    | conditional_statement
                    | while_statement
@@ -90,7 +77,7 @@ def p_epsilon(p):
 
 def p_conditional_statement(p):
     """conditional_statement : if_statement ELSE body
-                             | if_statement %prec IF """
+                             | if_statement %prec IFX """
     if len(p) > 2:
         p[0] = matrix_ast.ConditionalStatement(if_statement=p[1], ELSE=True, body=p[3])
     else:
@@ -132,10 +119,7 @@ def p_range(p):
 ########################################################################
 
 def p_sentence(p):
-    """sentence : sentence OR sentence
-                | sentence AND sentence
-                | NOT sentence
-                | expression EQUAL expression
+    """sentence : expression EQUAL expression
                 | expression NOT_EQUAL expression
                 | expression GREATER expression
                 | expression LESS expression
@@ -166,8 +150,8 @@ def p_expression(p):
                   | ZEROS L_R_BRACKET expression R_R_BRACKET
                   | ONES L_R_BRACKET expression R_R_BRACKET
                   | L_R_BRACKET expression R_R_BRACKET
-                  | assignment
                   | changeable
+                  | matrix
                   | INTEGER
                   | FLOAT
                   | STRING """
@@ -195,7 +179,6 @@ def p_assignment(p):
 
 def p_changeable(p):
     """changeable : ID
-                  | matrix
                   | expression L_S_BRACKET INTEGER COMMA INTEGER R_S_BRACKET %prec MAT_ELEMENT """
     if len(p) == 2:
         p[0] = p[1]
