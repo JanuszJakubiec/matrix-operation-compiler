@@ -79,24 +79,24 @@ def p_conditional_statement(p):
     """conditional_statement : if_statement ELSE body
                              | if_statement %prec IFX """
     if len(p) > 2:
-        p[0] = matrix_ast.ConditionalStatement(if_statement=p[1], ELSE=True, body=p[3])
+        p[0] = matrix_ast.ConditionalStatement(if_statement=p[1], ELSE=True, body=p[3], position=p.lineno)
     else:
-        p[0] = matrix_ast.ConditionalStatement(if_statement=p[1], ELSE=False, body=None)
+        p[0] = matrix_ast.ConditionalStatement(if_statement=p[1], ELSE=False, body=None, position=p.lineno)
 
 
 def p_if_statement(p):
     """if_statement : IF L_R_BRACKET sentence R_R_BRACKET body """
-    p[0] = matrix_ast.IfStatement(sentence=p[3], body=p[5])
+    p[0] = matrix_ast.IfStatement(sentence=p[3], body=p[5], position=p.lineno)
 
 
 def p_while_statement(p):
     """while_statement : WHILE L_R_BRACKET sentence R_R_BRACKET body """
-    p[0] = matrix_ast.WhileStatement(sentence=p[3], body=p[5])
+    p[0] = matrix_ast.WhileStatement(sentence=p[3], body=p[5], position=p.lineno)
 
 
 def p_for_statement(p):
     """for_statement : FOR ID ASSIGN range body """
-    p[0] = matrix_ast.ForStatement(id=p[2], assign=p[3], range=p[4], body=p[5])
+    p[0] = matrix_ast.ForStatement(id=p[2], assign=p[3], range=p[4], body=p[5], position=p.lineno)
 
 
 def p_body(p):
@@ -106,12 +106,12 @@ def p_body(p):
 
 def p_instruction_block(p):
     """instruction_block : L_C_BRACKET instructions_opt R_C_BRACKET """
-    p[0] = matrix_ast.InstructionBlock(p[2])
+    p[0] = matrix_ast.InstructionBlock(p[2], position=p.lineno)
 
 
 def p_range(p):
     """range : expression COLON expression """
-    p[0] = matrix_ast.Range(left=p[1], right=p[3])
+    p[0] = matrix_ast.Range(left=p[1], right=p[3], position=p.lineno)
 
 
 ########################################################################
@@ -126,9 +126,9 @@ def p_sentence(p):
                 | expression GREATER_EQUAL expression
                 | expression LESS_EQUAL expression """
     if len(p) > 3:
-        p[0] = matrix_ast.Sentence(left=p[1], operator=p[2], right=p[3])
+        p[0] = matrix_ast.Sentence(left=p[1], operator=p[2], right=p[3], position=p.lineno)
     else:
-        p[0] = matrix_ast.Sentence(left=None, operator=p[1], right=p[2])
+        p[0] = matrix_ast.Sentence(left=None, operator=p[1], right=p[2], position=p.lineno)
 
 
 ########################################################################
@@ -156,14 +156,14 @@ def p_expression(p):
                   | float
                   | string """
     if len(p) == 5:
-        p[0] = matrix_ast.FunctionCall(function=p[1], expression=p[3])
+        p[0] = matrix_ast.FunctionCall(function=p[1], expression=p[3], position=p.lineno)
     if len(p) == 4:
-        p[0] = matrix_ast.BinaryOperator(left=p[1], operator=p[2], right=p[3])
+        p[0] = matrix_ast.BinaryOperator(left=p[1], operator=p[2], right=p[3], position=p.lineno)
     if len(p) == 3:
         if p[1] == "-":
-            p[0] = matrix_ast.SingleOperator(operator=p[1], expression=p[2])
+            p[0] = matrix_ast.SingleOperator(operator=p[1], expression=p[2], position=p.lineno)
         if p[2] == "'":
-            p[0] = matrix_ast.SingleOperator(operator="TRANSPOSE", expression=p[1])
+            p[0] = matrix_ast.SingleOperator(operator="TRANSPOSE", expression=p[1], position=p.lineno)
     if len(p) == 2:
         p[0] = p[1]
 
@@ -174,7 +174,7 @@ def p_assignment(p):
                   | changeable MINUS_ASSIGN expression
                   | changeable TIMES_ASSIGN expression
                   | changeable DIVIDE_ASSIGN expression """
-    p[0] = matrix_ast.Assignment(left=p[1], operator=p[2], right=p[3])
+    p[0] = matrix_ast.Assignment(left=p[1], operator=p[2], right=p[3], position=p.lineno)
 
 
 def p_changeable(p):
@@ -183,27 +183,27 @@ def p_changeable(p):
     if len(p) == 2:
         p[0] = p[1]
     else:
-        p[0] = matrix_ast.MatrixCall(expression=p[1], integer1=p[3], integer2=p[5])
+        p[0] = matrix_ast.MatrixCall(expression=p[1], integer1=p[3], integer2=p[5], position=p.lineno)
 
 
 def p_integer(p):
     """integer : INTEGER"""
-    p[0] = matrix_ast.Integer(p[1])
+    p[0] = matrix_ast.Integer(p[1], position=p.lineno)
 
 
 def p_float(p):
     """float : FLOAT"""
-    p[0] = matrix_ast.Float(p[1])
+    p[0] = matrix_ast.Float(p[1], position=p.lineno)
 
 
 def p_string(p):
     """string : STRING"""
-    p[0] = matrix_ast.String(p[1])
+    p[0] = matrix_ast.String(p[1], position=p.lineno)
 
 
 def p_id(p):
     """id : ID"""
-    p[0] = matrix_ast.Id(p[1])
+    p[0] = matrix_ast.Id(p[1], position=p.lineno)
 
 
 ########################################################################
@@ -218,12 +218,12 @@ def p_command(p):
     if len(p) == 2:
         p[0] = p[1]
     else:
-        p[0] = matrix_ast.Return(expression=p[2])
+        p[0] = matrix_ast.Return(expression=p[2], position=p.lineno)
 
 
 def p_print_command(p):
     """print_command : PRINT sequence """
-    p[0] = matrix_ast.Print(sequence=p[2])
+    p[0] = matrix_ast.Print(sequence=p[2], position=p.lineno)
 
 
 ########################################################################
@@ -232,7 +232,7 @@ def p_print_command(p):
 
 def p_matrix(p):
     """matrix : L_S_BRACKET row_sequence R_S_BRACKET """
-    p[0] = matrix_ast.Matrix(p[2])
+    p[0] = matrix_ast.Matrix(p[2], position=p.lineno)
 
 
 def p_row_sequence(p):
@@ -246,7 +246,7 @@ def p_row_sequence(p):
 
 def p_row(p):
     """row : L_S_BRACKET sequence R_S_BRACKET """
-    p[0] = matrix_ast.Row(p[2])
+    p[0] = matrix_ast.Row(p[2], position=p.lineno)
 
 
 def p_sequence(p):
