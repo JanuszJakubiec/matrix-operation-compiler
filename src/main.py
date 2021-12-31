@@ -2,10 +2,13 @@ import sys
 import matrix_scanner  # matrix_scanner.py is a file you create, (it is not an external library)
 import matrix_parser
 from tree_printer import TreePrinter
+from type_checker import TypeChecker
 
 if __name__ == '__main__':
 
-    mode = 'print_tree'
+    mode = 'type_check'
+#    mode = 'print_tree'
+#    mode = 'scan'
 
     if mode == 'scan':
         try:
@@ -42,7 +45,7 @@ if __name__ == '__main__':
 
     if mode == 'print_tree':
         try:
-            filename = sys.argv[1] if len(sys.argv) > 1 else "example7.m"
+            filename = sys.argv[1] if len(sys.argv) > 1 else "example1.m"
             file = open(filename, "r")
         except IOError:
             print("Cannot open {0} file".format(filename))
@@ -52,3 +55,18 @@ if __name__ == '__main__':
         text = file.read()
         ast = parser.parse(text, lexer=matrix_scanner.Scanner())
         ast.print_tree()
+
+    if mode == 'type_check':
+        try:
+            filename = sys.argv[1] if len(sys.argv) > 1 else "example10.m"
+            file = open(filename, "r")
+        except IOError:
+            print("Cannot open {0} file".format(filename))
+            sys.exit(0)
+
+        parser = matrix_parser.parser
+        text = file.read()
+        ast = parser.parse(text, lexer=matrix_scanner.Scanner())
+        # Below code shows how to use visitor
+        typeChecker = TypeChecker()
+        typeChecker.visit(ast)  # or alternatively ast.accept(typeChecker)

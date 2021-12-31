@@ -77,7 +77,17 @@ class TreePrinter:
             self.left.print_tree(indent + 1)
         self.right.print_tree(indent + 1)
 
-    @add_to_class(matrix_ast.FunctionCall)
+    @add_to_class(matrix_ast.Zeros)
+    def print_tree(self, indent):
+        print(indent_text(self.function, indent))
+        self.expression.print_tree(indent + 1)
+
+    @add_to_class(matrix_ast.Ones)
+    def print_tree(self, indent):
+        print(indent_text(self.function, indent))
+        self.expression.print_tree(indent + 1)
+
+    @add_to_class(matrix_ast.Eye)
     def print_tree(self, indent):
         print(indent_text(self.function, indent))
         self.expression.print_tree(indent + 1)
@@ -144,8 +154,16 @@ class TreePrinter:
 
     @add_to_class(matrix_ast.String)
     def print_tree(self, indent):
-        print(indent_text(self.value), indent)
+        print(indent_text(self.value, indent))
 
     @add_to_class(matrix_ast.Id)
     def print_tree(self, indent):
         print(indent_text(str(self.value), indent))
+
+    @add_to_class(matrix_ast.Break)
+    def print_tree(self, indent):
+        print(indent_text("BREAK", indent))
+
+    @add_to_class(matrix_ast.Continue)
+    def print_tree(self, indent):
+        print(indent_text("CONTINUE", indent))

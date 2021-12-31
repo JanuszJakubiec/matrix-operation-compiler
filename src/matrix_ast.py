@@ -51,12 +51,6 @@ class Sentence(Node):
         self.right = right
         self.position = position
 
-class FunctionCall(Node):
-    def __init__(self, function, expression, position):
-        self.function = function
-        self.expression = expression
-        self.position = position
-
 class BinaryOperator(Node):
     def __init__(self, left, operator, right, position):
         self.left = left
@@ -130,4 +124,30 @@ class Float(Node):
 class String(Node):
     def __init__(self, value, position):
         self.value = value
+        self.position = position
+
+class Break(Node):
+    def __init__(self, position):
+        self.position = position
+
+class Continue(Node):
+    def __init__(self, position):
+        self.position = position
+
+class Eye(Node):
+    def __init__(self, function, expression, position):
+        self.function = function
+        self.expression = expression
+        self.position = position
+
+class Zeros(Node):
+    def __init__(self, function, expression, position):
+        self.function = function
+        self.expression = expression
+        self.position = position
+
+class Ones(Node):
+    def __init__(self, function, expression, position):
+        self.function = function
+        self.expression = expression
         self.position = position
