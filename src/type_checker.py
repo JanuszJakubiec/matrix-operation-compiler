@@ -232,7 +232,7 @@ class TypeChecker(NodeVisitor):
                         if type == "matrix_int" and rtype == "float":
                             type = self.symbol_table.put(node.left.expression.value, type + "/" + rows + "/" + columns)
                             return None
-            print("Line " + str(node.position) + ": Cannot assign value to something that is not variable")
+            print("Line " + str(node.left.position) + ": Cannot assign value to something that is not variable")
             return "error"
         if node.left.__class__.__name__ == "Id":
             ltype = self.visit(node.left)
@@ -242,6 +242,7 @@ class TypeChecker(NodeVisitor):
                 return 'error'
             if returnType != "error":
                 self.symbol_table.put(node.left.value, rtype)
+            return None
         if node.left.__class__.__name__ == "MatrixCall":
             ltype = self.visit(node.left)
             if ltype == "error":
@@ -259,7 +260,7 @@ class TypeChecker(NodeVisitor):
                 if type == "matrix_int" and rtype == "float":
                     self.symbol_table.put(node.left.expression.value, type + "/" + rows + "/" + columns)
                     return None
-        print("Line " + str(node.position) + ": Cannot assign value to something that is not variable")
+        print("Line " + str(node.left.position) + ": Cannot assign value to something that is not variable")
         return "error"
 
     def visit_MatrixCall(self, node):
