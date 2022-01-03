@@ -193,19 +193,30 @@ class TypeChecker(NodeVisitor):
         return returnType
 
     def visit_SingleOperator(self, node):
+        type = self.visit(node.expression)
         if node.operator == "-":
-            type = self.visit(node.expression)
             if type == "error":
                 return "error"
             if type == "int":
                 return "int"
             if type == "float":
                 return "float"
-            print("Line " + str(node.position) + ": illegal type: " + type)
+            if "/" in type:
+                tab = type.split("/")
+            if is_matrix_type(tab[0]):
+                return type
+            print("Line " + str(node.expression.position) + ": illegal type: " + type)
             return "error"
         else:
-            print("unimplemented")
-            return "error"
+            tab = None
+            if "/" in type:
+                tab = type.split("/")
+                type = tab[0]
+            if is_matrix_type(type):
+                return type + "/" + tab[2] + "/" + tab[1]
+            else:
+                print("Line " + str(node.expression.position) + ": illegal type: " + type)
+                return "error"
 
     def visit_Assignment(self, node):
         rtype = self.visit(node.right)
