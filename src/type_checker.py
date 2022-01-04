@@ -201,6 +201,7 @@ class TypeChecker(NodeVisitor):
                 return "int"
             if type == "float":
                 return "float"
+            tab = ["null"]
             if "/" in type:
                 tab = type.split("/")
             if is_matrix_type(tab[0]):
@@ -226,25 +227,25 @@ class TypeChecker(NodeVisitor):
             if node.left.__class__.__name__ == "Id":
                 self.symbol_table.put(node.left.value, rtype)
                 return None
-            else:
-                if node.left.__class__.__name__ == "MatrixCall":
-                    ltype = self.visit(node.left)
-                    if ltype == "error":
-                        return "error"
-                    if node.left.expression.__class__.__name__ == "Id":
-                        type = self.symbol_table.get(node.left.expression.value)
-                        rows = -2
-                        columns = -2
-                        if "/" in type:
-                            tab = type.split("/")
-                            rows = tab[1]
-                            columns = tab[2]
-                            type = tab[0]
-                        if type == "matrix_int" and rtype == "float":
-                            type = self.symbol_table.put(node.left.expression.value, type + "/" + rows + "/" + columns)
-                            return None
+            if node.left.__class__.__name__ == "MatrixCall":
+                ltype = self.visit(node.left)
+                if ltype == "error":
+                    return "error"
+                if node.left.expression.__class__.__name__ == "Id":
+                    type = self.symbol_table.get(node.left.expression.value)
+                    rows = -2
+                    columns = -2
+                    if "/" in type:
+                        tab = type.split("/")
+                        rows = tab[1]
+                        columns = tab[2]
+                        type = tab[0]
+                    if type == "matrix_int" and rtype == "float":
+                        type = self.symbol_table.put(node.left.expression.value, type + "/" + rows + "/" + columns)
+                    return None
             print("Line " + str(node.left.position) + ": Cannot assign value to something that is not variable")
             return "error"
+
         if node.left.__class__.__name__ == "Id":
             ltype = self.visit(node.left)
             returnType = get_binary_type(convert_operator(node.operator), ltype, rtype)

@@ -160,8 +160,13 @@ def p_expression(p):
                   | integer
                   | float
                   | string """
+    if len(p) == 7:
+        p[0] = matrix_ast.MatrixCall(expression=p[1], integer1=p[3], integer2=p[5], position=p.lineno(2))
     if len(p) == 4:
-        p[0] = matrix_ast.BinaryOperator(left=p[1], operator=p[2], right=p[3], position=p.lineno(2))
+        if p[1] == ("("):
+            p[0] = p[2]
+        else:
+            p[0] = matrix_ast.BinaryOperator(left=p[1], operator=p[2], right=p[3], position=p.lineno(2))
     if len(p) == 3:
         if p[1] == "-":
             p[0] = matrix_ast.SingleOperator(operator=p[1], expression=p[2], position=p.lineno(1))

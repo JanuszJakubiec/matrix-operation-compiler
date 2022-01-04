@@ -6,8 +6,8 @@ from type_checker import TypeChecker
 
 if __name__ == '__main__':
 
-#    mode = 'type_check'
-    mode = 'print_tree'
+    mode = 'type_check'
+#    mode = 'print_tree'
 #    mode = 'scan'
 #    mode = 'parse'
 
