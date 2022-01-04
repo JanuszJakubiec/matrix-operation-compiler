@@ -6,9 +6,12 @@ from type_checker import TypeChecker
 
 if __name__ == '__main__':
 
-    mode = 'type_check'
-#    mode = 'print_tree'
+#    mode = 'type_check'
+    mode = 'print_tree'
 #    mode = 'scan'
+#    mode = 'parse'
+
+    program = 'example11.m'
 
     if mode == 'scan':
         try:
@@ -33,7 +36,7 @@ if __name__ == '__main__':
 
     if mode == 'parse':
         try:
-            filename = sys.argv[1] if len(sys.argv) > 1 else "example7.m"
+            filename = sys.argv[1] if len(sys.argv) > 1 else program
             file = open(filename, "r")
         except IOError:
             print("Cannot open {0} file".format(filename))
@@ -45,7 +48,7 @@ if __name__ == '__main__':
 
     if mode == 'print_tree':
         try:
-            filename = sys.argv[1] if len(sys.argv) > 1 else "example11.m"
+            filename = sys.argv[1] if len(sys.argv) > 1 else program
             file = open(filename, "r")
         except IOError:
             print("Cannot open {0} file".format(filename))
@@ -58,7 +61,7 @@ if __name__ == '__main__':
 
     if mode == 'type_check':
         try:
-            filename = sys.argv[1] if len(sys.argv) > 1 else "example11.m"
+            filename = sys.argv[1] if len(sys.argv) > 1 else program
             file = open(filename, "r")
         except IOError:
             print("Cannot open {0} file".format(filename))

@@ -17,8 +17,9 @@ precedence = (
     ('left', 'PLUS', 'MINUS', 'MAT_PLUS', 'MAT_MINUS'),
     ('left', 'TIMES', 'DIVIDE', 'MAT_TIMES', 'MAT_DIVIDE'),
     ('right', 'UNARY_MINUS'),
-    # getting matrix element
-    ('nonassoc', 'MAT_ELEMENT'),
+
+    ('nonassoc', 'IDX'),
+    ('nonassoc', 'L_S_BRACKET'),
     # transpose operand
     ('left', 'TRANSPOSE'),
 )
@@ -149,6 +150,7 @@ def p_expression(p):
                   | expression MAT_DIVIDE expression
                   | MINUS expression %prec UNARY_MINUS
                   | expression TRANSPOSE
+                  | expression L_S_BRACKET expression COMMA expression R_S_BRACKET
                   | eye
                   | zeros
                   | ones
@@ -169,17 +171,21 @@ def p_expression(p):
         p[0] = p[1]
         p.set_lineno(0, p.lineno(1))
 
+
 def p_eye(p):
     """eye : EYE L_R_BRACKET expression R_R_BRACKET"""
     p[0] = matrix_ast.Eye(function=p[1], expression=p[3], position=p.lineno(1))
+
 
 def p_zeros(p):
     """zeros : ZEROS L_R_BRACKET expression R_R_BRACKET"""
     p[0] = matrix_ast.Zeros(function=p[1], expression=p[3], position=p.lineno(1))
 
+
 def p_ones(p):
     """ones : ONES L_R_BRACKET expression R_R_BRACKET"""
     p[0] = matrix_ast.Ones(function=p[1], expression=p[3], position=p.lineno(1))
+
 
 def p_assignment(p):
     """assignment : changeable ASSIGN expression
@@ -189,9 +195,10 @@ def p_assignment(p):
                   | changeable DIVIDE_ASSIGN expression """
     p[0] = matrix_ast.Assignment(left=p[1], operator=p[2], right=p[3], position=p.lineno(1))
 
+
 def p_changeable(p):
-    """changeable : id
-                  | expression L_S_BRACKET expression COMMA expression R_S_BRACKET %prec MAT_ELEMENT """
+    """changeable : id %prec IDX
+                  | id L_S_BRACKET expression COMMA expression R_S_BRACKET """
     if len(p) == 2:
         p[0] = p[1]
     else:
@@ -215,6 +222,7 @@ def p_string(p):
     p[0] = matrix_ast.String(p[1], position=p.lineno(1))
     p.set_lineno(0, p.lineno(1))
 
+
 def p_id(p):
     """id : ID"""
     p[0] = matrix_ast.Id(p[1], position=p.lineno(1))
@@ -236,10 +244,12 @@ def p_command(p):
         p[0] = matrix_ast.Return(expression=p[2], position=p.lineno(1))
     p.set_lineno(0, p.lineno(1))
 
+
 def p_break(p):
     """break : BREAK"""
     p[0] = matrix_ast.Break(position = p.lineno(1))
     p.set_lineno(0, p.lineno(1))
+
 
 def p_continue(p):
     """continue : CONTINUE"""
