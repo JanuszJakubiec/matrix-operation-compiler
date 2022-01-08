@@ -2,6 +2,8 @@ class Node(object):
     pass
     def __str__(self):
         return self.print_tree()
+    def accept(self, visitor):
+        return visitor.visit(self)
 
 class Error(Node):
     def __init__(self):
@@ -77,6 +79,7 @@ class MatrixCall(Node):
         self.x = integer1
         self.y = integer2
         self.position = position
+        #zeros(5)[1,1]
 
 class Return(Node):
     def __init__(self, expression, position):

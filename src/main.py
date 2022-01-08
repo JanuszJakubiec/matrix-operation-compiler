@@ -3,14 +3,17 @@ import matrix_scanner  # matrix_scanner.py is a file you create, (it is not an e
 import matrix_parser
 from tree_printer import TreePrinter
 from type_checker import TypeChecker
+from interpreter import Interpreter
 
 if __name__ == '__main__':
 
     mode = 'type_check'
+#    mode = 'interpreter'
 #    mode = 'print_tree'
 #    mode = 'scan'
 #    mode = 'parse'
 
+    #name of the file to be read
     program = 'example11.m'
 
     if mode == 'scan':
@@ -73,3 +76,20 @@ if __name__ == '__main__':
         # Below code shows how to use visitor
         typeChecker = TypeChecker()
         typeChecker.visit(ast)  # or alternatively ast.accept(typeChecker)
+
+    if mode == "interpreter":
+        try:
+            filename = sys.argv[1] if len(sys.argv) > 1 else program
+            file = open(filename, "r")
+        except IOError:
+            print("Cannot open {0} file".format(filename))
+            sys.exit(0)
+
+        parser = matrix_parser.parser
+        text = file.read()
+        ast = parser.parse(text, lexer=matrix_scanner.Scanner())
+        typeChecker = TypeChecker()
+        typeChecker.visit(ast)  # or alternatively ast.accept(typeChecker)
+
+        interpreter = Interpreter()
+        print(ast.accept(interpreter))

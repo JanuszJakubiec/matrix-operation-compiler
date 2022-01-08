@@ -139,28 +139,29 @@ class TypeChecker(NodeVisitor):
 
     def visit_ConditionalStatement(self, node):
         self.visit(node.if_statement)
-        self.symbol_table.pushScope(self.symbol_table.name + "ELSE", False)
-        self.visit(node.else_body)
-        self.symbol_table.popScope()
+        if node.ELSE:
+            self.symbol_table = self.symbol_table.pushScope(self.symbol_table.name + "ELSE", self.symbol_table.inLoop)
+            self.visit(node.else_body)
+            self.symbol_table = self.symbol_table.popScope()
 
     def visit_IfStatement(self, node):
-        self.symbol_table.pushScope(self.symbol_table.name + "IF", False)
         self.visit(node.sentence)
+        self.symbol_table = self.symbol_table.pushScope(self.symbol_table.name + "IF", self.symbol_table.inLoop)
         self.visit(node.body)
-        self.symbol_table.popScope()
+        self.symbol_table = self.symbol_table.popScope()
 
     def visit_WhileStatement(self, node):
-        self.symbol_table.pushScope(self.symbol_table.name + "WHILE", True)
+        self.symbol_table = self.symbol_table.pushScope(self.symbol_table.name + "WHILE", True)
         self.visit(node.sentence)
         self.visit(node.body)
-        self.symbol_table.popScope()
+        self.symbol_table = self.symbol_table.popScope()
 
     def visit_ForStatement(self, node):
-        self.symbol_table.pushScope(self.symbol_table.name + "FOR", True)
+        self.symbol_table = self.symbol_table.pushScope(self.symbol_table.name + "FOR", True)
         self.symbol_table.put(node.id, "int")
         self.visit(node.range)
         self.visit(node.body)
-        self.symbol_table.popScope()
+        self.symbol_table = self.symbol_table.popScope()
 
     def visit_Range(self, node):
         lvalue = self.visit(node.left)
@@ -173,7 +174,7 @@ class TypeChecker(NodeVisitor):
         rtype = self.visit(node.right)
         if ltype == "error" or rtype == "error":
             return "error"
-        if node.operator == "==":
+        if node.operator == "==" or "!=":
             return "int"
         if (ltype == rtype or convert(ltype) == convert(rtype)) and "/" not in ltype:
             return "int"
@@ -282,6 +283,7 @@ class TypeChecker(NodeVisitor):
         rows = -2
         columns = -2
         if "/" in type:
+            #matrix_int/3/3
             tab = type.split("/")
             rows = int(tab[1], 10)
             columns = int(tab[2], 10)

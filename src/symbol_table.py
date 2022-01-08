@@ -13,7 +13,20 @@ class SymbolTable(object):
         self.inLoop = loop
 
     def put(self, name, symbol): # put variable symbol or fundef under <name> entry
+        inserted = False
+        if self.symbols.get(name, None) is None:
+            if self.parent is not None:
+                inserted = self.parent.put_parent(name, symbol)
+        if not inserted:
+            self.symbols[name] = symbol
+
+    def put_parent(self, name, symbol):
+        if self.symbols.get(name, None) is None:
+            if self.parent is None:
+                return False
+            return self.parent.put_parent(name, symbol)
         self.symbols[name] = symbol
+        return True
     #
 
     def get(self, name): # get variable symbol or fundef from <name> entry
